@@ -2,7 +2,8 @@ import sendResponse from '../../../shared/sendResponse'
 import { UserService } from './user.service'
 import httpStatus from 'http-status'
 import { Request, Response } from 'express'
-const createUser = async (req: Request, res: Response) => {
+import catchAsync from '../../../shared/catchAsync'
+const createUser = catchAsync(async (req: Request, res: Response) => {
   const user = req.body
   console.log(user)
 
@@ -15,7 +16,7 @@ const createUser = async (req: Request, res: Response) => {
     message: 'Users created successfully',
     data: result,
   })
-}
+})
 export const UserController = {
   createUser,
 }
