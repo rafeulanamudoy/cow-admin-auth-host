@@ -4,15 +4,29 @@ import { UserRole } from './user.constant'
 
 const userSchema = new Schema<IUser>(
   {
-    phoneNumber: {
+    password: {
       type: String,
-      required: true,
+      unique: true,
     },
     role: {
       type: String,
       required: true,
       enum: UserRole,
     },
+    name: {
+      firstName: {
+        type: String,
+      },
+      lastName: {
+        type: String,
+      },
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
     address: {
       type: String,
       required: true,
