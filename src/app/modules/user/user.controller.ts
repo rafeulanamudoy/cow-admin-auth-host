@@ -37,7 +37,25 @@ const getUsers = catchAsync(
     next()
   }
 )
+
+const getSingleUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id
+
+    const result = await UserService.getSingleUser(id)
+
+    sendResponse<IUser>(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+
+      message: 'User retrieved successfully',
+      data: result,
+    })
+    next()
+  }
+)
 export const UserController = {
   createUser,
   getUsers,
+  getSingleUser,
 }

@@ -9,7 +9,12 @@ const getUsers = async (): Promise<IUser[] | null> => {
   const getUsers = await User.find({})
   return getUsers
 }
+const getSingleUser = async (id: string): Promise<IUser | null> => {
+  const getUsers = await User.findById(id)
+  return getUsers
+}
 export const UserService = {
   createUser,
   getUsers,
+  getSingleUser,
 }
