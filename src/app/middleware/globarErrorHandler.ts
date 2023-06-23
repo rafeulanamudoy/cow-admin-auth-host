@@ -3,6 +3,7 @@ import config from '../../config'
 import handleValidationError from '../errors/handleValidationError'
 import { IGenericErrorMessage } from '../interfaces/error'
 import handleCastError from '../errors/handleCastError'
+import ApiError from '../errors/ApiError'
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = 500
@@ -19,11 +20,10 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     statusCode = simplifiedError?.statusCode
     message = simplifiedError?.message
     errorMessages = simplifiedError?.errorMessages
-  } else if (err instanceof Error) {
-    console.log('hei i am from Error class error')
-    console.log('error message line 29', err?.message)
+  } else if (err instanceof ApiError) {
+    //console.log('hei i am from ApiError class error')
+    statusCode = err.statusCode
     message = err?.message
-
     errorMessages = err?.message
       ? [
           {
@@ -46,3 +46,18 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 }
 
 export default globalErrorHandler
+
+// else if (err instanceof Error) {
+//     console.log('hei i am from Error class error')
+//     console.log('error message line 29', err?.message)
+//     message = err?.message
+
+//     errorMessages = err?.message
+//       ? [
+//           {
+//             path: '',
+//             message: err?.message,
+//           },
+//         ]
+//       : []
+//   }
