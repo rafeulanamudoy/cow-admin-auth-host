@@ -7,4 +7,6 @@ export const UserRoutes = router
 
 router.post('/signUp', UserController.createUser)
 
+router.get('/', UserController.getUsers)
+
 //api/v1/auth/signup
