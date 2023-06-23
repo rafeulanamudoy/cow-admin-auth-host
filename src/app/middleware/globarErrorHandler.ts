@@ -2,6 +2,7 @@ import { ErrorRequestHandler } from 'express'
 import config from '../../config'
 import handleValidationError from '../errors/handleValidationError'
 import { IGenericErrorMessage } from '../interfaces/error'
+import handleCastError from '../errors/handleCastError'
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = 500
@@ -13,6 +14,11 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     statusCode = simplifiedError.statusCode
     message = simplifiedError.message
     errorMessages = simplifiedError.errorMessages
+  } else if (err?.name == 'CastError') {
+    const simplifiedError = handleCastError(err)
+    statusCode = simplifiedError?.statusCode
+    message = simplifiedError?.message
+    errorMessages = simplifiedError?.errorMessages
   } else if (err instanceof Error) {
     console.log('hei i am from Error class error')
     console.log('error message line 29', err?.message)
