@@ -55,9 +55,24 @@ const updateSingleCow = catchAsync(
     next()
   }
 )
+const deleteSingleCow = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id
 
+    const result = await CowService.deleteSingleCow(id)
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+
+      message: 'Cow deleted successfully',
+      data: result,
+    })
+    next()
+  }
+)
 export const CowController = {
   createCow,
   getSingleCow,
   updateSingleCow,
+  deleteSingleCow,
 }
