@@ -33,8 +33,9 @@ const cowSchema = new Schema<ICow>(
     },
     label: {
       type: String,
-      required: true,
+
       enum: CowLabel,
+      default: 'for sale',
     },
     category: {
       type: String,
@@ -44,6 +45,7 @@ const cowSchema = new Schema<ICow>(
     seller: {
       type: Schema.Types.ObjectId,
       ref: 'User',
+      required: true,
     },
   },
   {
