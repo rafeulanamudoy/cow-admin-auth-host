@@ -3,6 +3,7 @@ import catchAsync from '../../../shared/catchAsync'
 import sendResponse from '../../../shared/sendResponse'
 import { CowService } from './cow.service'
 import { Request, Response, NextFunction } from 'express'
+import { ICow } from './cow.interface'
 
 const createCow = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -36,8 +37,27 @@ const getSingleCow = catchAsync(
     next()
   }
 )
+const updateSingleCow = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id
+    const updateData = req.body
+    console.log(updateData)
+
+    const result = await CowService.updateSingleCow(id, updateData)
+
+    sendResponse<ICow>(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+
+      message: 'Cow updated successfully',
+      data: result,
+    })
+    next()
+  }
+)
 
 export const CowController = {
   createCow,
   getSingleCow,
+  updateSingleCow,
 }

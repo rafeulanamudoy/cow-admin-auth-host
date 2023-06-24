@@ -6,3 +6,4 @@ export const CowRouter = router
 
 router.post('/', CowController.createCow)
 router.get('/:id', CowController.getSingleCow)
+router.patch('/:id', CowController.updateSingleCow)
