@@ -6,6 +6,7 @@ const userSchema = new Schema<IUser>(
   {
     password: {
       type: String,
+      required: true,
     },
     role: {
       type: String,
@@ -15,9 +16,11 @@ const userSchema = new Schema<IUser>(
     name: {
       firstName: {
         type: String,
+        required: true,
       },
       lastName: {
         type: String,
+        required: true,
       },
     },
     phoneNumber: {

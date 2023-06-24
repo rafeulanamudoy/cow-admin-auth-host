@@ -1,10 +1,10 @@
-import mongoose from 'mongoose'
 import { IGenericErrorMessage } from '../interfaces/error'
-
-const handleCastError = (error: mongoose.Error.CastError) => {
+import { MongoError } from 'mongodb'
+const duplicateEntryError = (error: MongoError) => {
+  console.log(error, 'i am from duplicate entry')
   const errors: IGenericErrorMessage[] = [
     {
-      path: error.path,
+      path: '',
       message: error.message,
     },
   ]
@@ -13,9 +13,9 @@ const handleCastError = (error: mongoose.Error.CastError) => {
 
   return {
     statusCode,
-    message: 'Cast Error',
+    message: 'Duplicate Entry',
     errorMessages: errors,
   }
 }
 
-export default handleCastError
+export default duplicateEntryError
