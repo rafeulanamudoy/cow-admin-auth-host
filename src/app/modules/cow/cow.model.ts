@@ -53,4 +53,4 @@ const cowSchema = new Schema<ICow>(
   }
 )
 
-export const User = model<ICow>('Cow', cowSchema)
+export const Cow = model<ICow>('Cow', cowSchema)
