@@ -5,3 +5,4 @@ const router = express.Router()
 export const CowRouter = router
 
 router.post('/', CowController.createCow)
+router.get('/:id', CowController.getSingleCow)

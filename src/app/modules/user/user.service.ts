@@ -19,8 +19,8 @@ const getUsers = async (): Promise<IUser[] | null> => {
   return getUsers
 }
 const getSingleUser = async (id: string): Promise<IUser | null> => {
-  const getUsers = await User.findById(id)
-  return getUsers
+  const getUser = await User.findById(id)
+  return getUser
 }
 const updateSingleUser = async (
   id: string,

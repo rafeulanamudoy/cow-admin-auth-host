@@ -6,7 +6,12 @@ const createCow = async (cow: ICow): Promise<ICow | null> => {
   const createdCow = await Cow.create(cow)
   return createdCow
 }
+const getSingleCow = async (id: string): Promise<ICow | null> => {
+  const getCow = await Cow.findById(id).populate('seller')
+  return getCow
+}
 
 export const CowService = {
   createCow,
+  getSingleCow,
 }
