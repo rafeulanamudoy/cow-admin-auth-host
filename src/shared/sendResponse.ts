@@ -8,7 +8,7 @@ type ISendResponse<T> = {
   meta?: {
     page: number
     limit: number
-    count: number
+    count?: number
   }
 }
 

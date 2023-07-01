@@ -22,4 +22,6 @@ export const cowFilterableField = [
   'price',
   'weight',
   'name',
+  'minPrice',
+  'maxPrice',
 ]

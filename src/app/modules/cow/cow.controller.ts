@@ -77,7 +77,11 @@ const getCows = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const paginationOptions = pick(req.query, paginationFileds)
     const filters = pick(req.query, cowFilterableField)
-    console.log(filters, 'i am from controller filters')
+    console.log(
+      filters,
+      paginationOptions,
+      'i am from controller to check filters'
+    )
     const result = await CowService.getCows(filters, paginationOptions)
 
     sendResponse<ICow[]>(res, {

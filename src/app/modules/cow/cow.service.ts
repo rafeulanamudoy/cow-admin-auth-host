@@ -49,7 +49,7 @@ const getCows = async (
 
   //const { price, age } = filtersData
 
-  console.log(filtersData, 'i am from service')
+  console.log(filtersData, 'i am from service to check filter data')
   const andCondition = []
 
   if (query) {
@@ -70,6 +70,12 @@ const getCows = async (
           const numericValue = parseFloat(value as string)
 
           return { [field]: numericValue }
+        } else if (field === 'minPrice') {
+          const parsingMinPrice = parseInt(value as string)
+          return { price: { $lt: parsingMinPrice } }
+        } else if (field === 'maxPrice') {
+          const parsingMaxPrice = parseInt(value as string)
+          return { price: { $gt: parsingMaxPrice } }
         }
         return { [field]: { $regex: value as string, $options: 'i' } }
       }),
@@ -82,7 +88,7 @@ const getCows = async (
   if (sortBy && sortOrder) {
     sortCondition[sortBy] = sortOrder
   }
-  //console.log(sortCondition)
+  console.log(sortCondition, 'to check sort condition')
   const whereConditions = andCondition.length > 0 ? { $and: andCondition } : {}
 
   const result = await Cow.find(whereConditions)
@@ -90,14 +96,23 @@ const getCows = async (
     .skip(skip)
     .limit(limit)
   const count = await Cow.countDocuments()
-
-  return {
-    meta: {
-      page,
-      limit,
-      count,
-    },
-    data: result,
+  if (andCondition.length > 0) {
+    return {
+      meta: {
+        page,
+        limit,
+      },
+      data: result,
+    }
+  } else {
+    return {
+      meta: {
+        page,
+        limit,
+        count,
+      },
+      data: result,
+    }
   }
 }
 
