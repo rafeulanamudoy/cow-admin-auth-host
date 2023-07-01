@@ -13,3 +13,13 @@ export const CowLocation: ICowLocation[] = [
 
 export const CowLabel = ['for sale', 'sold out']
 export const CowCatagory = ['Dairy ', 'Beef', 'DualPurpose ']
+export const cowFilterableField = [
+  'query',
+  'location',
+  'breed',
+  'category',
+  'age',
+  'price',
+  'weight',
+  'name',
+]

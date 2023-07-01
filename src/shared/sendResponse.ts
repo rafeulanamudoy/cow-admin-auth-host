@@ -17,7 +17,8 @@ const sendResponse = <T>(res: Response, data: ISendResponse<T>): void => {
     success: data.success,
     statusCode: data.statusCode,
     message: data.message || null,
-    data: data.data,
+    meta: data.meta || null || undefined,
+    data: data.data || null,
   }
   res.status(data.statusCode).json(responseData)
 }

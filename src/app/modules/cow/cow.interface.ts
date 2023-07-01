@@ -12,7 +12,9 @@ export type ICowLocation =
   | 'Mymensingh'
 
 export type ICowLabel = 'for sale' | 'sold out'
-
+export type ICowFilters = {
+  query?: string
+}
 export type ICowCatagory = 'Dairy ' | 'Beef' | 'DualPurpose '
 export type ICow = {
   name: string

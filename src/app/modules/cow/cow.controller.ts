@@ -4,6 +4,9 @@ import sendResponse from '../../../shared/sendResponse'
 import { CowService } from './cow.service'
 import { Request, Response, NextFunction } from 'express'
 import { ICow } from './cow.interface'
+import pick from '../../../shared/pick'
+import { paginationFileds } from '../../../constants/pagination'
+import { cowFilterableField } from './cow.constant'
 
 const createCow = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -60,7 +63,7 @@ const deleteSingleCow = catchAsync(
     const id = req.params.id
 
     const result = await CowService.deleteSingleCow(id)
-    sendResponse(res, {
+    sendResponse<ICow>(res, {
       success: true,
       statusCode: httpStatus.OK,
 
@@ -70,9 +73,28 @@ const deleteSingleCow = catchAsync(
     next()
   }
 )
+const getCows = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const paginationOptions = pick(req.query, paginationFileds)
+    const filters = pick(req.query, cowFilterableField)
+    console.log(filters, 'i am from controller filters')
+    const result = await CowService.getCows(filters, paginationOptions)
+
+    sendResponse<ICow[]>(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+
+      message: 'Cow retrived successfully',
+      meta: result.meta,
+      data: result.data,
+    })
+    next()
+  }
+)
 export const CowController = {
   createCow,
   getSingleCow,
   updateSingleCow,
   deleteSingleCow,
+  getCows,
 }
