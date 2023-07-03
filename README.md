@@ -10,7 +10,7 @@
 
 #### Delete a User:https://digitalcowhut.onrender.com/api/v1/users/:id (delete)
 
-# Cow EndPoint
+# Cow Api EndPoint
 
 #### Create a New Cow:https://digitalcowhut.onrender.com/api/v1/cows (Post)
 
@@ -22,7 +22,7 @@
 
 #### Delete a Cow: https://digitalcowhut.onrender.com/api/v1/cows/:id (delete)
 
-# Order EndPoint
+# Order Api EndPoint
 
 #### Create Orders :https://digitalcowhut.onrender.com/api/v1/orders (Post)
 
