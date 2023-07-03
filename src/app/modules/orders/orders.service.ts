@@ -10,6 +10,7 @@ const createOrder = async (order: IOrder): Promise<IOrder | null> => {
   // console.log(order)
   const buyer = await User.findById(order.buyer)
   const cow = await Cow.findById(order.cow)
+
   if (buyer && cow && buyer.budget < cow.price) {
     throw new ApiError(
       httpStatus.BAD_GATEWAY,
@@ -22,7 +23,16 @@ const createOrder = async (order: IOrder): Promise<IOrder | null> => {
     session.startTransaction()
 
     createdOrder = await Order.create([order], { session })
-    console.log(createOrder)
+
+    const cowFilter = { label: 'sold out' }
+    const BuyerRemainingMoney =
+      buyer && cow ? buyer?.budget - cow?.price : undefined
+    const sellerId = cow?.seller.toString()
+    const buyerFilterMoney = { budget: BuyerRemainingMoney }
+    await User.findOneAndUpdate({ _id: order.buyer }, buyerFilterMoney)
+    await User.findOneAndUpdate({ _id: sellerId }, { income: cow?.price })
+    await Cow.findOneAndUpdate({ _id: order.cow }, cowFilter)
+
     if (!createdOrder.length) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create Order')
     }
