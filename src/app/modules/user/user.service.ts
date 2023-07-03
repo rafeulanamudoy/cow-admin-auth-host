@@ -3,7 +3,7 @@ import { IUser } from './user.interface'
 import { User } from './user.model'
 
 const createUser = async (user: IUser): Promise<IUser | null> => {
-  console.log(user)
+  // console.log(user)
 
   if (user?.role === 'seller' && user.budget > 0) {
     throw new ApiError(400, 'you cannot set budget  you may can set income')

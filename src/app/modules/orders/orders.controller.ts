@@ -9,7 +9,7 @@ const createOrders = catchAsync(
     const order = req.body
 
     const result = await OrderService.createOrder(order)
-    console.log(result)
+    // console.log(result)
 
     sendResponse(res, {
       success: true,
