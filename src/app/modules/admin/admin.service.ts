@@ -4,7 +4,8 @@ import { Admin } from './admin.model'
 const createAdmin = async (admin: IAdmin): Promise<IAdmin | null> => {
   // console.log(user)
 
-  const createUser = await Admin.create(admin)
+  const createUser = (await Admin.create(admin)).toObject()
+
   return createUser
 }
 

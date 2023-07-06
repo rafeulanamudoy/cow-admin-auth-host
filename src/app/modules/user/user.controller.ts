@@ -8,9 +8,11 @@ import { IUser } from './user.interface'
 const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = req.body
-    console.log(user)
+    // console.log(user)
 
     const result = await UserService.createUser(user)
+
+    console.log(result)
 
     sendResponse(res, {
       success: true,
