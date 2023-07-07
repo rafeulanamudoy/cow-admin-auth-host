@@ -6,6 +6,8 @@ import handleCastError from '../errors/handleCastError'
 import ApiError from '../errors/ApiError'
 import { MongoError } from 'mongodb'
 import duplicateEntryError from '../errors/duplicateEntryError'
+import { ZodError } from 'zod'
+import handleZodError from '../errors/handleZodError'
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = 500
@@ -29,6 +31,11 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     errorMessages = simplifiedError?.errorMessages
 
     //console.log(err, 'i am from MongoError', err.message)
+  } else if (err instanceof ZodError) {
+    const simplifiedError = handleZodError(err)
+    statusCode = simplifiedError.statusCode
+    message = simplifiedError.message
+    errorMessages = simplifiedError.errorMessages
   } else if (err instanceof ApiError) {
     console.log('hei i am from ApiError class error')
     statusCode = err.statusCode

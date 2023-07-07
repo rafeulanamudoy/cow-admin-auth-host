@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+import mongoose, { Model } from 'mongoose'
+
 export type IAdminRole = 'admin'
 
 export type IAdmin = {
@@ -10,3 +13,13 @@ export type IAdmin = {
   }
   address: string
 }
+
+export type AdminModel = {
+  isAdminExist(
+    phoneNumber: string
+  ): Promise<Pick<IAdmin, 'password' | 'role' | 'phoneNumber'>>
+  isPasswordMatched(
+    givenPassword: string,
+    savedPassword: string
+  ): Promise<boolean>
+} & Model<IAdmin>

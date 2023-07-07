@@ -1,10 +1,10 @@
 import { Schema, model } from 'mongoose'
-import { IAdmin } from './admin.interface'
+import { AdminModel, IAdmin } from './admin.interface'
 import { AdminRole } from './admin.constant'
 import config from '../../../config'
 import bcrypt from 'bcrypt'
 
-const adminSchema = new Schema<IAdmin>(
+const adminSchema = new Schema<IAdmin, AdminModel>(
   {
     phoneNumber: {
       type: String,
@@ -40,6 +40,16 @@ const adminSchema = new Schema<IAdmin>(
     timestamps: true,
   }
 )
+
+adminSchema.statics.isAdminExist = async function (
+  phoneNumber: string
+): Promise<IAdmin | null> {
+  return await Admin.findOne(
+    { phoneNumber },
+    { phoneNumber: 1, password: 1, role: 1 }
+  )
+}
+
 adminSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(
     this.password,
@@ -48,4 +58,4 @@ adminSchema.pre('save', async function (next) {
   next()
 })
 
-export const Admin = model<IAdmin>('Admin', adminSchema)
+export const Admin = model<IAdmin, AdminModel>('Admin', adminSchema)
