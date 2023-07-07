@@ -22,7 +22,12 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
     })
   }
 })
+const adminLogin = catchAsync(async (req: Request, res: Response) => {
+  const admin = req.body
+  console.log(admin)
+})
 
 export const AdminController = {
   createAdmin,
+  adminLogin,
 }
