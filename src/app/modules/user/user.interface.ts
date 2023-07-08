@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+import mongoose, { Model } from 'mongoose'
+
 export type IUserRole = 'seller' | 'buyer'
 
 export type IUser = {
@@ -13,3 +16,20 @@ export type IUser = {
   budget: number
   income: number
 }
+export type IUserExistReturn = {
+  _id: mongoose.ObjectId
+  phoneNumber: string
+  role: string
+  password: string
+}
+export type UserModel = {
+  isUserExist(
+    phoneNumber: string
+  ): Promise<
+    Pick<IUserExistReturn, 'password' | 'role' | 'phoneNumber' | '_id'>
+  >
+  isPasswordMatched(
+    givenPassword: string,
+    savedPassword: string
+  ): Promise<boolean>
+} & Model<IUser>

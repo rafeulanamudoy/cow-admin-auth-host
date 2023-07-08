@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { IUser } from './user.interface'
+import { IUser, IUserExistReturn } from './user.interface'
 import { UserRole } from './user.constant'
 import bcrypt from 'bcrypt'
 import config from '../../../config'
@@ -47,6 +47,15 @@ const userSchema = new Schema<IUser>(
     timestamps: true,
   }
 )
+
+userSchema.statics.isUserExist = async function (
+  phoneNumber: string
+): Promise<IUserExistReturn | null> {
+  return await User.findOne(
+    { phoneNumber },
+    { _id: 1, phoneNumber: 1, password: 1, role: 1 }
+  )
+}
 userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(
     this.password,
