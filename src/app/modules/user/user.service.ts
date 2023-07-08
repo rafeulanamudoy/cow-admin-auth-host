@@ -5,7 +5,7 @@ import { User } from './user.model'
 import { jwtHelpers } from '../../../helpers/jwtHelpers'
 import config from '../../../config'
 import { Secret } from 'jsonwebtoken'
-
+import jwt from 'jsonwebtoken'
 const createUser = async (user: IUser): Promise<IUser | null> => {
   // console.log(user)
 
@@ -71,6 +71,38 @@ const userLogin = async (
     refreshToken,
   }
 }
+
+const refreshToken = async (token: string) => {
+  let verifiedToken = null
+  try {
+    verifiedToken = jwtHelpers.verifyToken(
+      token,
+      config.jwt.refresh_secret as Secret
+    )
+  } catch (err) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token')
+  }
+  console.log('verified token from service', verifiedToken)
+  const { _id } = verifiedToken
+
+  const isUserExist = await User.findOne({ _id }, { _id: 1, role: 1 })
+  if (!isUserExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist')
+  }
+
+  const newAccessToken = jwtHelpers.createToken(
+    {
+      _id: isUserExist._id,
+      role: isUserExist.role,
+    },
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string
+  )
+
+  return {
+    accessToken: newAccessToken,
+  }
+}
 export const UserService = {
   createUser,
   getUsers,
@@ -78,4 +110,5 @@ export const UserService = {
   updateSingleUser,
   deleteSingleUser,
   userLogin,
+  refreshToken,
 }

@@ -4,12 +4,11 @@ import httpStatus from 'http-status'
 import { NextFunction, Request, Response } from 'express'
 
 import catchAsync from '../../../shared/catchAsync'
-import { IUser } from './user.interface'
+import { IRefreshTokenResponse, IUser } from './user.interface'
 import config from '../../../config'
 const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = req.body
-    // console.log(user)
 
     const result = await UserService.createUser(user)
 
@@ -116,6 +115,27 @@ const userLogin = catchAsync(async (req: Request, res: Response) => {
     })
   }
 })
+const refreshToken = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { refreshToken } = req.cookies
+    //console.log('my cookies', req.cookies)
+    const result = await UserService.refreshToken(refreshToken)
+    const cookieOptions = {
+      secure: config.env === 'production',
+      httpOnly: true,
+    }
+    res.cookie('refreshToken', refreshToken, cookieOptions)
+
+    sendResponse<IRefreshTokenResponse>(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+
+      message: 'New access token generated successfully !',
+      data: result,
+    })
+    next()
+  }
+)
 export const UserController = {
   createUser,
   getUsers,
@@ -123,4 +143,5 @@ export const UserController = {
   updateSingleUser,
   deleteSingleUser,
   userLogin,
+  refreshToken,
 }

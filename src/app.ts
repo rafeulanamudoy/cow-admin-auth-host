@@ -3,8 +3,10 @@ const app: Application = express()
 import cors from 'cors'
 import { routes } from './app/routes'
 import globalErrorHandler from './app/middleware/globarErrorHandler'
+import cookieParser from 'cookie-parser'
 app.use(cors())
 app.use(express.json())
+app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
 app.use('/api/v1', routes)
 app.use(globalErrorHandler)
