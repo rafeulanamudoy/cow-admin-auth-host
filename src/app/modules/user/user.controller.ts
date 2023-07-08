@@ -5,6 +5,7 @@ import { NextFunction, Request, Response } from 'express'
 
 import catchAsync from '../../../shared/catchAsync'
 import { IUser } from './user.interface'
+import config from '../../../config'
 const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = req.body
@@ -91,11 +92,35 @@ const deleteSingleUser = catchAsync(
     next()
   }
 )
+const userLogin = catchAsync(async (req: Request, res: Response) => {
+  const { ...loginData } = req.body
+  const result = await UserService.userLogin(loginData)
+  //console.log(result)
 
+  // set refresh token into cookie
+  const cookieOptions = {
+    secure: config.env === 'production',
+    httpOnly: true,
+  }
+
+  if (result !== null) {
+    const { refreshToken, ...others } = result
+
+    res.cookie('refreshToken', refreshToken, cookieOptions)
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User logged in successfully!',
+      data: others,
+    })
+  }
+})
 export const UserController = {
   createUser,
   getUsers,
   getSingleUser,
   updateSingleUser,
   deleteSingleUser,
+  userLogin,
 }

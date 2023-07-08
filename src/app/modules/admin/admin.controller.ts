@@ -4,7 +4,7 @@ import sendResponse from '../../../shared/sendResponse'
 import httpStatus from 'http-status'
 
 import { AdminService } from './admin.service'
-import { IAdmin, ILoginAdminRespone } from './admin.interface'
+import { IAdmin } from './admin.interface'
 
 import config from '../../../config'
 
@@ -45,14 +45,6 @@ const adminLogin = catchAsync(async (req: Request, res: Response) => {
       success: true,
       message: 'Admin logged in successfully!',
       data: others,
-    })
-  } else {
-    // Handle the case when result is null
-    sendResponse<ILoginAdminRespone>(res, {
-      statusCode: 404,
-      success: false,
-      message: 'Admin not found.',
-      data: null,
     })
   }
 })

@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose'
-import { IUser, IUserExistReturn } from './user.interface'
+import { IUser, IUserExistReturn, UserModel } from './user.interface'
 import { UserRole } from './user.constant'
 import bcrypt from 'bcrypt'
 import config from '../../../config'
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<IUser, UserModel>(
   {
     password: {
       type: String,
@@ -70,4 +70,4 @@ userSchema.pre('save', async function (next) {
   next()
 })
 
-export const User = model<IUser>('User', userSchema)
+export const User = model<IUser, UserModel>('User', userSchema)

@@ -22,6 +22,14 @@ export type IUserExistReturn = {
   role: string
   password: string
 }
+export type ILoginUser = {
+  phoneNumber: string
+  password: string
+}
+export type ILoginUserResponse = {
+  refreshToken?: string
+  accessToken: string
+}
 export type UserModel = {
   isUserExist(
     phoneNumber: string
