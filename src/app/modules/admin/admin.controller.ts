@@ -4,8 +4,9 @@ import sendResponse from '../../../shared/sendResponse'
 import httpStatus from 'http-status'
 
 import { AdminService } from './admin.service'
-import { IAdmin } from './admin.interface'
-import { Admin } from './admin.model'
+import { IAdmin, ILoginAdminRespone } from './admin.interface'
+
+import config from '../../../config'
 
 const createAdmin = catchAsync(async (req: Request, res: Response) => {
   const admin = req.body
@@ -24,8 +25,36 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
   }
 })
 const adminLogin = catchAsync(async (req: Request, res: Response) => {
-  const admin = req.body
-  console.log(admin)
+  const { ...loginData } = req.body
+  const result = await AdminService.loginAdmin(loginData)
+  console.log(result)
+
+  // set refresh token into cookie
+  const cookieOptions = {
+    secure: config.env === 'production',
+    httpOnly: true,
+  }
+
+  if (result !== null) {
+    const { refreshToken, ...others } = result
+
+    res.cookie('refreshToken', refreshToken, cookieOptions)
+
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: 'Admin logged in successfully!',
+      data: others,
+    })
+  } else {
+    // Handle the case when result is null
+    sendResponse<ILoginAdminRespone>(res, {
+      statusCode: 404,
+      success: false,
+      message: 'Admin not found.',
+      data: null,
+    })
+  }
 })
 
 export const AdminController = {

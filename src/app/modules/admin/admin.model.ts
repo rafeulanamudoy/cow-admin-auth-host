@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { AdminModel, IAdmin } from './admin.interface'
+import { AdminModel, IAdmin, IAdminExistReturn } from './admin.interface'
 import { AdminRole } from './admin.constant'
 import config from '../../../config'
 import bcrypt from 'bcrypt'
@@ -43,10 +43,10 @@ const adminSchema = new Schema<IAdmin, AdminModel>(
 
 adminSchema.statics.isAdminExist = async function (
   phoneNumber: string
-): Promise<IAdmin | null> {
+): Promise<IAdminExistReturn | null> {
   return await Admin.findOne(
     { phoneNumber },
-    { phoneNumber: 1, password: 1, role: 1 }
+    { _id: 1, phoneNumber: 1, password: 1, role: 1 }
   )
 }
 adminSchema.statics.isPasswordMatched = async function (

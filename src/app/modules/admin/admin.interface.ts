@@ -13,11 +13,27 @@ export type IAdmin = {
   }
   address: string
 }
+export type ILoginAdmin = {
+  phoneNumber: string
+  password: string
+}
+export type IAdminExistReturn = {
+  _id: mongoose.ObjectId
+  phoneNumber: string
+  role: string
+  password: string
+}
+export type ILoginAdminRespone = {
+  refreshToken?: string
+  accessToken: string
+}
 
 export type AdminModel = {
   isAdminExist(
     phoneNumber: string
-  ): Promise<Pick<IAdmin, 'password' | 'role' | 'phoneNumber'>>
+  ): Promise<
+    Pick<IAdminExistReturn, 'password' | 'role' | 'phoneNumber' | '_id'>
+  >
   isPasswordMatched(
     givenPassword: string,
     savedPassword: string
