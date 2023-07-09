@@ -31,6 +31,8 @@ const createUser = catchAsync(
 
 const getUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.user, 'i am from user controller of user')
+    console.log(req.headers.authorization)
     const result = await UserService.getUsers()
 
     sendResponse<IUser[]>(res, {
