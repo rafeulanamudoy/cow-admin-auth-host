@@ -11,17 +11,21 @@ const createUser = catchAsync(
     const user = req.body
 
     const result = await UserService.createUser(user)
+    // eslint-disable-next-line no-unused-vars
+    if (result !== null) {
+      // eslint-disable-next-line no-unused-vars
+      const { password, ...others } = result
+      console.log(result)
 
-    console.log(result)
+      sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
 
-    sendResponse(res, {
-      success: true,
-      statusCode: httpStatus.OK,
-
-      message: 'Users created successfully',
-      data: result,
-    })
-    next()
+        message: 'Users created successfully',
+        data: others,
+      })
+      next()
+    }
   }
 )
 

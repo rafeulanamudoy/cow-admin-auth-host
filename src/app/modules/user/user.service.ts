@@ -5,7 +5,6 @@ import { User } from './user.model'
 import { jwtHelpers } from '../../../helpers/jwtHelpers'
 import config from '../../../config'
 import { Secret } from 'jsonwebtoken'
-import jwt from 'jsonwebtoken'
 const createUser = async (user: IUser): Promise<IUser | null> => {
   // console.log(user)
 
@@ -14,7 +13,7 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
   } else if (user?.role === 'buyer' && user.income > 0) {
     throw new ApiError(400, 'you cannot set income you may set budget')
   } else {
-    const createUser = await User.create(user)
+    const createUser = (await User.create(user)).toObject()
     return createUser
   }
 }
