@@ -4,6 +4,7 @@ import mongoose, { Model } from 'mongoose'
 export type IUserRole = 'seller' | 'buyer'
 
 export type IUser = {
+  _id?: mongoose.Types.ObjectId
   password: string
   role: IUserRole
   name: {
@@ -17,7 +18,7 @@ export type IUser = {
   income: number
 }
 export type IUserExistReturn = {
-  _id: mongoose.ObjectId
+  _id: mongoose.Types.ObjectId
   phoneNumber: string
   role: string
   password: string

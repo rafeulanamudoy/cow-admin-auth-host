@@ -4,6 +4,7 @@ import httpStatus from 'http-status'
 import { jwtHelpers } from '../../helpers/jwtHelpers'
 import config from '../../config'
 import { Secret } from 'jsonwebtoken'
+import { Cow } from '../modules/cow/cow.model'
 
 const auth =
   (...requiredRoles: string[]) =>
@@ -18,12 +19,22 @@ const auth =
       let verifiedUser = null
 
       verifiedUser = jwtHelpers.verifyToken(token, config.jwt.secret as Secret)
-      console.log(verifiedUser, 'i am frm auth.ts to verify token')
-      req.user = verifiedUser // role  , userid
 
-      // role diye guard korar jnno
+      req.user = verifiedUser // role  , _id
+      const cowId = req.params.id
+      const cowOwner = await Cow.findById(cowId).populate('seller')
       if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
         throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden')
+      }
+
+      if (
+        verifiedUser.role === 'seller' &&
+        cowOwner?.seller._id?.toString() !== verifiedUser._id
+      ) {
+        throw new ApiError(
+          httpStatus.UNAUTHORIZED,
+          'You are not owener of this cow'
+        )
       }
       next()
     } catch (error) {
