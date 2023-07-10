@@ -4,7 +4,7 @@ import { ILoginUser, ILoginUserResponse, IUser } from './user.interface'
 import { User } from './user.model'
 import { jwtHelpers } from '../../../helpers/jwtHelpers'
 import config from '../../../config'
-import { JwtPayload, Secret } from 'jsonwebtoken'
+import { Secret } from 'jsonwebtoken'
 const createUser = async (user: IUser): Promise<IUser | null> => {
   // console.log(user)
 
@@ -103,10 +103,20 @@ const refreshToken = async (token: string) => {
   }
 }
 
-const getMyProfile = async (user: JwtPayload): Promise<IUser | null> => {
-  console.log(user)
-  const getUsers = await User.findById(user._id)
+const getMyProfile = async (userId: string): Promise<IUser | null> => {
+  //console.log(user)
+  const getUsers = await User.findById(userId)
   return getUsers
+}
+const updateMyProfile = async (
+  userId: string,
+  payload: Partial<IUser>
+): Promise<IUser | null> => {
+  //console.log(user)
+  const result = await User.findOneAndUpdate({ _id: userId }, payload, {
+    new: true,
+  })
+  return result
 }
 export const UserService = {
   createUser,
@@ -117,4 +127,5 @@ export const UserService = {
   userLogin,
   refreshToken,
   getMyProfile,
+  updateMyProfile,
 }

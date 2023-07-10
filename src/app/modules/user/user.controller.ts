@@ -140,7 +140,31 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
     token as string,
     config.jwt.secret as Secret
   )
-  const result = await UserService.getMyProfile(verifiedUser)
+  const result = await UserService.getMyProfile(verifiedUser._id)
+
+  sendResponse<IUser>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: 'Users information retrieved successfully',
+    data: result,
+  })
+})
+
+const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
+  const token = req.headers.authorization
+  const updateData = req.body
+  if (!token) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized')
+  }
+  let verifiedUser: JwtPayload
+
+  // eslint-disable-next-line prefer-const
+  verifiedUser = jwtHelpers.verifyToken(
+    token as string,
+    config.jwt.secret as Secret
+  )
+  const result = await UserService.updateMyProfile(verifiedUser._id, updateData)
 
   sendResponse<IUser>(res, {
     success: true,
@@ -159,4 +183,5 @@ export const UserController = {
   userLogin,
   refreshToken,
   getMyProfile,
+  updateMyProfile,
 }

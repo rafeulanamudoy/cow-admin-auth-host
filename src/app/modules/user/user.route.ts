@@ -9,6 +9,7 @@ const router = express.Router()
 
 export const UserRoutes = router
 router.get('/my-profile', UserController.getMyProfile)
+router.patch('/my-profile', UserController.updateMyProfile)
 router.post('/signUp', UserController.createUser)
 router.post('/login', UserController.userLogin)
 router.get('/:id', auth(Enum_Role.ADMIN), UserController.getSingleUser)
