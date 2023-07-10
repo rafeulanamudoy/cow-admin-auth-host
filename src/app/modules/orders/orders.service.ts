@@ -54,7 +54,7 @@ const getOrders = async (user: JwtPayload): Promise<IOrder[] | null> => {
   const sellerCowId = sellerCow.map(cow => cow._id.toString())
   const filter =
     user.role === 'buyer'
-      ? { buyer: user.role }
+      ? { buyer: user._id }
       : user.role === 'seller'
       ? { cow: { $in: sellerCowId } }
       : {}
