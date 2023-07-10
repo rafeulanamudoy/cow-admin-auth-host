@@ -22,7 +22,8 @@ const auth =
 
       req.user = verifiedUser // role  , _id
       const cowId = req.params.id
-      const cowOwner = await Cow.findById(cowId).populate('seller')
+      const cowOwner = await Cow.findById(cowId).populate('seller').lean()
+
       if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
         throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden')
       }
@@ -33,9 +34,10 @@ const auth =
       ) {
         throw new ApiError(
           httpStatus.UNAUTHORIZED,
-          'You are not owener of this cow'
+          'You are not owner of this cow'
         )
       }
+
       next()
     } catch (error) {
       next(error)
