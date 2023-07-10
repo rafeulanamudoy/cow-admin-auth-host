@@ -8,8 +8,16 @@ import { Enum_Role } from '../../enums/role'
 const router = express.Router()
 
 export const UserRoutes = router
-router.get('/my-profile', UserController.getMyProfile)
-router.patch('/my-profile', UserController.updateMyProfile)
+router.get(
+  '/my-profile',
+  auth(Enum_Role.BUYER, Enum_Role.SELLER),
+  UserController.getMyProfile
+)
+router.patch(
+  '/my-profile',
+  auth(Enum_Role.BUYER, Enum_Role.SELLER),
+  UserController.updateMyProfile
+)
 router.post('/signUp', UserController.createUser)
 router.post('/login', UserController.userLogin)
 router.get('/:id', auth(Enum_Role.ADMIN), UserController.getSingleUser)
