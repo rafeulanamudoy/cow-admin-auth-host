@@ -3,7 +3,7 @@ import ApiError from '../errors/ApiError'
 import httpStatus from 'http-status'
 import { jwtHelpers } from '../../helpers/jwtHelpers'
 import config from '../../config'
-import { Secret } from 'jsonwebtoken'
+import { JwtPayload, Secret } from 'jsonwebtoken'
 import { Order } from '../modules/orders/orders.model'
 import { Cow } from '../modules/cow/cow.model'
 
@@ -16,7 +16,7 @@ const orderAuth =
         throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized')
       }
       // verify token
-      let verifiedUser: any
+      let verifiedUser: JwtPayload
 
       // eslint-disable-next-line prefer-const
       verifiedUser = jwtHelpers.verifyToken(token, config.jwt.secret as Secret)

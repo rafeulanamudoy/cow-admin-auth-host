@@ -4,6 +4,9 @@ import sendResponse from '../../../shared/sendResponse'
 import { Request, Response, NextFunction } from 'express'
 import { OrderService } from './orders.service'
 import { IOrder } from './orders.interface'
+
+import { IUser } from '../user/user.interface'
+
 const createOrders = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const order = req.body
@@ -23,7 +26,11 @@ const createOrders = catchAsync(
 )
 const getOrders = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await OrderService.getOrders()
+    // eslint-disable-next-line prefer-const
+    const user = req.user as IUser
+
+    // console.log(user, 'from controller')
+    const result = await OrderService.getOrders(user)
 
     sendResponse<IOrder[]>(res, {
       success: true,

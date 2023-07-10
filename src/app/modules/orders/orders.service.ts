@@ -6,6 +6,8 @@ import ApiError from '../../errors/ApiError'
 import { User } from '../user/user.model'
 import { Cow } from '../cow/cow.model'
 
+import { JwtPayload } from 'jsonwebtoken'
+
 const createOrder = async (order: IOrder): Promise<IOrder | null> => {
   // console.log(order)
   const buyer = await User.findById(order.buyer)
@@ -47,8 +49,18 @@ const createOrder = async (order: IOrder): Promise<IOrder | null> => {
 
   return createdOrder[0]
 }
-const getOrders = async (): Promise<IOrder[] | null> => {
-  const getOrders = await Order.find({})
+const getOrders = async (user: JwtPayload): Promise<IOrder[] | null> => {
+  const sellerCow = await Cow.find({ seller: user._id }).lean()
+  const sellerCowId = sellerCow.map(cow => cow._id.toString())
+  const filter =
+    user.role === 'buyer'
+      ? { buyer: user.role }
+      : user.role === 'seller'
+      ? { cow: { $in: sellerCowId } }
+      : {}
+
+  const getOrders = await Order.find(filter)
+
   return getOrders
 }
 export const OrderService = {
