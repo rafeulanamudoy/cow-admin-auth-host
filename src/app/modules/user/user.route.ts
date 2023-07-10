@@ -8,7 +8,7 @@ import { Enum_Role } from '../../enums/role'
 const router = express.Router()
 
 export const UserRoutes = router
-
+router.get('/my-profile', UserController.getMyProfile)
 router.post('/signUp', UserController.createUser)
 router.post('/login', UserController.userLogin)
 router.get('/:id', auth(Enum_Role.ADMIN), UserController.getSingleUser)
@@ -20,4 +20,5 @@ router.post(
   validateRequest(AuthValidation.refreshTokenZodSchema),
   UserController.refreshToken
 )
+
 //api/v1/auth/signup
