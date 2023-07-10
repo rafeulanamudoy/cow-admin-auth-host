@@ -9,3 +9,4 @@ export const OrderRouter = router
 
 router.post('/', auth(Enum_Role.BUYER), OrderController.createOrders)
 router.get('/', orderAuth(), OrderController.getOrders)
+router.get('/:id', OrderController.getSingleOrder)

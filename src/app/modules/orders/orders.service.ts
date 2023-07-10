@@ -63,7 +63,12 @@ const getOrders = async (user: JwtPayload): Promise<IOrder[] | null> => {
 
   return getOrders
 }
+const getSingleOrder = async (id: string): Promise<IOrder | null> => {
+  const getOrder = await Order.findById(id)
+  return getOrder
+}
 export const OrderService = {
   createOrder,
   getOrders,
+  getSingleOrder,
 }

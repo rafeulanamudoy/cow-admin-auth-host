@@ -26,10 +26,7 @@ const specificSellerAuth =
       const cowOwner = await Cow.findById(cowId).populate('seller').lean()
 
       if (cowOwner?.seller._id?.toString() !== verifiedUser._id) {
-        throw new ApiError(
-          httpStatus.UNAUTHORIZED,
-          'You are not owner of this cow'
-        )
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'You are forbidden')
       }
 
       next()

@@ -36,8 +36,23 @@ const getOrders = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+const getSingleOrder = catchAsync(async (req: Request, res: Response) => {
+  // eslint-disable-next-line prefer-const
+  const id = req.params.id
 
+  // console.log(user, 'from controller')
+  const result = await OrderService.getSingleOrder(id)
+
+  sendResponse<IOrder>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+
+    message: 'Orders retrieved successfully',
+    data: result,
+  })
+})
 export const OrderController = {
   createOrders,
   getOrders,
+  getSingleOrder,
 }
